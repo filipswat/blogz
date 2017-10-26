@@ -1,0 +1,15 @@
+<!-- show all users as links to get request all-posts" -->
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<ul>
+    {% for user in user_list %}
+        <li>{{user.username}}</li>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

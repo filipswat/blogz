@@ -1,0 +1,20 @@
+<!-- straightforward login form, register link at bottom -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Login</h1>
+
+<form method="POST" action="/register">
+    <label for="username">Username</label>
+    <input name="username" type="text" value={{username}}>
+    <label for="password">Password</label>
+    <input name="password" type="password">
+    <input type="submit" value="Register">
+</form>
+
+<p>Click <a href="/register">here</a> to register a new account.</p>
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- normal form, posted to /register -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Create a New Account</h1>
+
+<form method="POST" action="/register">
+    <label for="username">Username</label>
+    <input name="username" type="text" value={{username}}>
+    <label for="password">Password</label>
+    <input name="password" type="password">
+    <label for="verify">Confirm Password</label>
+    <input name="verify" type="password">
+    <input type="submit" value="Register">
+</form>
+
+{% endblock %}
