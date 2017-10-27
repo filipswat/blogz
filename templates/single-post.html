@@ -1,7 +1,8 @@
-{% extends "base.html"}
+{% extends "base.html" %}
 
 {% block content %}
 
-
-
+<h1>{{post.title}}</h1>
+<p>{{post.content}}</p>
+<p><a href={{"/all-posts?user-id="~post.creator_id}}>Posted by {{user.username}}</a></p>
 {% endblock %}

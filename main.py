@@ -3,6 +3,12 @@ from models import User, BlogPost
 from app import db, app
 import cgi
 
+def is_int(text):
+    try:
+        int(text)
+        return True
+    except ValueError:
+        return False
 
 @app.route("/login", methods = ["GET", "POST"])
 # link to registration page at bottom
@@ -39,7 +45,7 @@ def register():
         password = request.form["password"]
         verify = request.form["verify"]
     
-        if not username or not password:
+        if not username or not password or not password==verify:
             return redirect("/register")
     
         existing_user = User.query.filter_by(username=username).first()
@@ -77,18 +83,44 @@ def add_post():
         new_post = BlogPost(title, content, user)
         db.session.add(new_post)
         db.session.commit()
-        return redirect("/")
+
+        return render_template("single-post.html",
+        post=new_post, user=user)
 
 
     return render_template("add-post.html")
 
 
-@app.route("/all-posts", methods=["GET", "POST"])
+@app.route("/all-posts", methods=["GET"])
 # if no request, show all posts from all users
 # if user get request, show all user's posts (user-posts template)
 # if post get request, show individual post (single-post template)
 def show_posts():
-    return render_template("all-posts.html")
+    get_user = request.args.get("user-id")
+    get_post = request.args.get("post-id")
+
+    post_list = BlogPost.query.all()
+
+    if get_user:
+        if not is_int(get_user):
+            return render_template("all-posts.html", post_list=post_list)
+        
+        user_id = int(get_user)
+        post_list = BlogPost.query.filter_by(creator_id=user_id).all()
+
+        return render_template("all-posts.html", post_list=post_list)
+    
+    if get_post:
+        if not is_int(get_post):
+            return render_template("all-posts.html", post_list=post_list)
+        
+        post_id = int(get_post)
+        post = BlogPost.query.get(post_id)
+        user = User.query.get(post.creator_id)
+
+        return render_template("single-post.html", post=post, user=user)
+
+    return render_template("all-posts.html", post_list=post_list)
 
 
 @app.route("/logout")
