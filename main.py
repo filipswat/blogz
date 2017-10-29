@@ -25,10 +25,9 @@ def login():
 
         if user and user.password == password:
             session["username"] = username
-            print("it worked")
             return redirect("/")
         else:
-            return "<h1> You're so stupid </h1>"
+            return render_template("login.html", error="this is an error")
     
     return render_template("login.html")
 
@@ -46,7 +45,7 @@ def register():
         verify = request.form["verify"]
     
         if not username or not password or not password==verify:
-            return redirect("/register")
+            return redirect("/register", error="this is an error")
     
         existing_user = User.query.filter_by(username=username).first()
         if not existing_user:
