@@ -45,7 +45,7 @@ def register():
         verify = request.form["verify"]
     
         if not username or not password or not password==verify:
-            return redirect("/register", error="this is an error")
+            return render_template("register.html", error="this is an error")
     
         existing_user = User.query.filter_by(username=username).first()
         if not existing_user:
@@ -53,7 +53,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             session["username"] = username
-            return redirect("/")
+            return redirect("/add-post")
         else:
             return redirect("/login")
         
